@@ -95,6 +95,15 @@ public class OpMode {
             telemetry.addData("ColorSensor Reading", colorSensor.red());
             telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().red);
             telemetry.update();
+            telemetry.addData("ColorSensor Reading", colorSensor.blue());
+            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().blue);
+            telemetry.update();
+            telemetry.addData("ColorSensor Reading", colorSensor.green());
+            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().green);
+            telemetry.addData("ColorSensor Reading", colorSensor.alpha());
+            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().alpha);
+            telemetry.update();
+            telemetry.update();
             y = gamepad1.left_stick_y;
             x = gamepad1.right_stick_x;
             telemetry.update();
