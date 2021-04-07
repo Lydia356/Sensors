@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.*;
 
 public class OpMode {
     @TeleOp(name = "MecanumSample1", group = "Honors Robotics")
@@ -11,17 +10,28 @@ public class OpMode {
         String name;
         String group;
         TouchSensor touch;
-        ColorSensor color;
-
+        ColorSensor colorSensor;
+        NormalizedColorSensor normalizedColorSensor;
+        RevColorSensorV3 revColorSensorV3;
 
         DcMotor back_left;
         DcMotor back_right;
         DcMotor arm;
-        DcMotor servo;
+        Servo armServo;
 
-        boolean isFullPower = true;
-        float x;
-        float y;
+
+        public void armUp(){
+            arm.setPower(1);
+        }
+
+        public void armDown(){
+            arm.setPower(-1);
+        }
+
+        float x = gamepad1.left_stick_x;
+        float y = gamepad1.left_stick_y;
+        float xr = gamepad1.right_stick_x;
+        float yr = gamepad1.right_stick_y;
 
         public void move(){
             back_right.setPower(y);
@@ -31,9 +41,13 @@ public class OpMode {
             telemetry.addData("The value of y is",y);
         }
 
+        public void servo(){
+            armServo.setPosition(xr);
+        }
+
         public void rotate(){
-            back_right.setPower(-y);
-            back_left.setPower(y);
+            back_right.setPower(-x);
+            back_left.setPower(x);
             telemetry.update();
             telemetry.addData("The value of x is", x);
             telemetry.addData("The value of y is",y);
@@ -48,6 +62,11 @@ public class OpMode {
             }
         }
 
+        public void shutDown(){
+            back_left.setPower(0);
+            back_right.setPower(0);
+            arm.setPower(0);
+        }
         public void checkControllerCalibration(){
             telemetry.addData("Value of left stick y", y);
             telemetry.addData("Value of left stick x", x);
@@ -65,19 +84,40 @@ public class OpMode {
 
         @Override
         public void init() {
+            armServo = hardwareMap.servo.get("armServo");
+            colorSensor = hardwareMap.colorSensor.get("colorSensor");
+            normalizedColorSensor = (NormalizedColorSensor) hardwareMap.colorSensor.get("colorSensor");
+            revColorSensorV3 = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
         }
 
         @Override
         public void loop() {
+            telemetry.addData("ColorSensor Reading", colorSensor.red());
+            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().red);
+            telemetry.update();
             y = gamepad1.left_stick_y;
             x = gamepad1.right_stick_x;
             telemetry.update();
             telemetry.addData("Y value:",y);
             telemetry.addData("X value:",x);
 
+            if(gamepad1.y==true){
+                armUp();
+            }
+            if(gamepad1.a==true){
+                armDown();
+            }
+
+            if(gamepad1.left_bumper==true){
+                stop();
+            }
+            if(gamepad1.right_bumper==true){
+                shutDown();
+            }
 
             rotate();
             move();
+            servo();
 
         }
     }
