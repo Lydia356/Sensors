@@ -88,6 +88,8 @@ public class OpMode {
             colorSensor = hardwareMap.colorSensor.get("colorSensor");
             normalizedColorSensor = (NormalizedColorSensor) hardwareMap.colorSensor.get("colorSensor");
             revColorSensorV3 = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
+
+            touch = hardwareMap.touchSensor.get("touchSensor");
         }
 
         @Override
@@ -124,6 +126,10 @@ public class OpMode {
                 shutDown();
             }
 
+            while(touch.isPressed()){
+                telemetry.update();
+                telemetry.addData("Touchsensor is pressed",touch);
+            }
             rotate();
             move();
             servo();
