@@ -102,6 +102,7 @@ public class OpMode {
             telemetry.update();
             telemetry.addData("ColorSensor Reading: Green", colorSensor.green());
             telemetry.addData("V3 Sensor Reading: Green",revColorSensorV3.getNormalizedColors().green);
+            telemetry.update();
             y = gamepad1.left_stick_y;
             x = gamepad1.right_stick_x;
             telemetry.update();
