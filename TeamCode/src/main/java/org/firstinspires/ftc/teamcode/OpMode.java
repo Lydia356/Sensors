@@ -13,7 +13,7 @@ public class OpMode {
         ColorSensor colorSensor;
         NormalizedColorSensor normalizedColorSensor;
         RevColorSensorV3 revColorSensorV3;
-//
+
         DcMotor back_left;
         DcMotor back_right;
         DcMotor arm;
@@ -94,18 +94,14 @@ public class OpMode {
 
         @Override
         public void loop() {
-            telemetry.addData("ColorSensor Reading", colorSensor.red());
-            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().red);
+            telemetry.addData("ColorSensor Reading: Red", colorSensor.red());
+            telemetry.addData("V3 Sensor Reading: Red",revColorSensorV3.getNormalizedColors().red);
             telemetry.update();
-            telemetry.addData("ColorSensor Reading", colorSensor.blue());
-            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().blue);
+            telemetry.addData("ColorSensor Reading: Blue", colorSensor.blue());
+            telemetry.addData("V3 Sensor Reading: Blue",revColorSensorV3.getNormalizedColors().blue);
             telemetry.update();
-            telemetry.addData("ColorSensor Reading", colorSensor.green());
-            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().green);
-            telemetry.addData("ColorSensor Reading", colorSensor.alpha());
-            telemetry.addData("V3 Sensor Reading",revColorSensorV3.getNormalizedColors().alpha);
-            telemetry.update();
-            telemetry.update();
+            telemetry.addData("ColorSensor Reading: Green", colorSensor.green());
+            telemetry.addData("V3 Sensor Reading: Green",revColorSensorV3.getNormalizedColors().green);
             y = gamepad1.left_stick_y;
             x = gamepad1.right_stick_x;
             telemetry.update();
@@ -127,9 +123,16 @@ public class OpMode {
             }
 
             while(touch.isPressed()){
-                telemetry.update();
-                telemetry.addData("Touchsensor is pressed",touch);
+                if(touch.isPressed()){
+                    if(touch.isPressed()){
+                        if(touch.isPressed()){
+                            telemetry.update();
+                            telemetry.addData("Unlocked",touch);
+                        }
+                    }
+                }
             }
+
             rotate();
             move();
             servo();
