@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.*;
-
-public class OpMode {
-    @TeleOp(name = "MecanumSample1", group = "Honors Robotics")
-    public class MecanumSample1 extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
+@TeleOp(name = "MecanumSample1", group = "Honors Robotics")
+public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
         String name;
         String group;
         TouchSensor touch;
@@ -94,15 +92,21 @@ public class OpMode {
 
         @Override
         public void loop() {
-            telemetry.addData("ColorSensor Reading: Red", colorSensor.red());
-            telemetry.addData("V3 Sensor Reading: Red",revColorSensorV3.getNormalizedColors().red);
-            telemetry.update();
-            telemetry.addData("ColorSensor Reading: Blue", colorSensor.blue());
-            telemetry.addData("V3 Sensor Reading: Blue",revColorSensorV3.getNormalizedColors().blue);
-            telemetry.update();
-            telemetry.addData("ColorSensor Reading: Green", colorSensor.green());
-            telemetry.addData("V3 Sensor Reading: Green",revColorSensorV3.getNormalizedColors().green);
-            telemetry.update();
+            if(colorSensor.red()>0) {
+                telemetry.addData("ColorSensor Reading: Red", colorSensor.red());
+                telemetry.addData("V3 Sensor Reading: Red", revColorSensorV3.getNormalizedColors().red);
+                telemetry.update();
+            }
+            if(colorSensor.green()>0) {
+                telemetry.addData("ColorSensor Reading: Blue", colorSensor.blue());
+                telemetry.addData("V3 Sensor Reading: Blue", revColorSensorV3.getNormalizedColors().blue);
+                telemetry.update();
+            }
+            if(colorSensor.blue()>0) {
+                telemetry.addData("ColorSensor Reading: Green", colorSensor.green());
+                telemetry.addData("V3 Sensor Reading: Green", revColorSensorV3.getNormalizedColors().green);
+                telemetry.update();
+            }
             y = gamepad1.left_stick_y;
             x = gamepad1.right_stick_x;
             telemetry.update();
@@ -118,9 +122,6 @@ public class OpMode {
 
             if(gamepad1.left_bumper==true){
                 stop();
-            }
-            if(gamepad1.right_bumper==true){
-                shutDown();
             }
 
             while(touch.isPressed()){
@@ -141,6 +142,5 @@ public class OpMode {
         }
     }
 
-}
 
 
