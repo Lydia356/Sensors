@@ -182,9 +182,12 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
             colorSensor = hardwareMap.colorSensor.get("colorSensor");
             normalizedColorSensor = (NormalizedColorSensor) hardwareMap.colorSensor.get("colorSensor");
             revColorSensorV3 = (RevColorSensorV3) hardwareMap.colorSensor.get("colorSensor");
-
             touch = hardwareMap.touchSensor.get("touchSensor");
-
+            try {
+                autonomous();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
