@@ -86,6 +86,7 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
     double armUp = 7;
     double armDown = 0;
     double order = 0;
+    double servoPosition = 1;
     int seconds = timesButtonPressed;
 
     @Override
@@ -97,6 +98,7 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
     }
 
         public void autonomous() throws InterruptedException {
+            armServo.setPosition(servoPosition);
             for (int i = 0; i < timesButtonPressed; i++) {
                 while (arm.getCurrentPosition() < armUp) {
                     arm.setPower(1);
@@ -105,11 +107,14 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
                         arm.setPower(-1);
                         if (arm.getCurrentPosition() == armDown) {
                             arm.setPower(0);
-                            order++;
+                            if (i == timesButtonPressed) {
+                                order++;
+                            }
                         }
                     }
                 }
             }
+
             while (order == 1) {
                 Thread.sleep(timesButtonPressed);
                 order++;
@@ -126,13 +131,14 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
                 back_left.getCurrentPosition();
 
 
-                double e = 72 * DII;
-                while (back_left.getCurrentPosition() < e) {
+                double distance = 72 * DII;
+                double startingPosition = back_left.getCurrentPosition();
+                while (back_left.getCurrentPosition() < distance) {
                     if (colorSensor.red() > colorSensor.blue() && colorSensor.red() > colorSensor.green()) {
                         back_left.setPower(0);
                         back_right.setPower(0);
                     }
-                    if (colorSensor.blue() > colorSensor.red() && colorSensor.blue()>colorSensor.green()) {
+                    if (colorSensor.blue() > colorSensor.red() && colorSensor.blue() > colorSensor.green()) {
                         back_left.setPower(0.5);
                         back_right.setPower(0.5);
                     }
@@ -140,9 +146,28 @@ public class OpMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode {
                         back_left.setPower(1);
                         back_right.setPower(1);
                     }
-                    if (back_left.getCurrentPosition() == x) {
+                    if (back_left.getCurrentPosition() == distance) {
                         back_right.setPower(0);
                         back_left.setPower(0);
+                        armServo.setPosition(0);
+                    }
+                    while (back_left.getCurrentPosition() > startingPosition) {
+                        if (colorSensor.red() > colorSensor.blue() && colorSensor.red() > colorSensor.green()) {
+                            back_left.setPower(0);
+                            back_right.setPower(0);
+                        }
+                        if (colorSensor.blue() > colorSensor.red() && colorSensor.blue() > colorSensor.green()) {
+                            back_left.setPower(-0.5);
+                            back_right.setPower(-0.5);
+                        }
+                        if (colorSensor.green() > colorSensor.red() && colorSensor.green() > colorSensor.blue()) {
+                            back_left.setPower(-1);
+                            back_right.setPower(-1);
+                        }
+                        if (back_left.getCurrentPosition() == startingPosition) {
+                            back_left.setPower(0);
+                            back_right.setPower(0);
+                        }
                     }
                 }
             }
